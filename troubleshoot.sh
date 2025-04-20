@@ -13,11 +13,25 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-echo "Langkah 1: Cek status service..."
-systemctl status lintasfiber
+# Periksa mode operasi
+echo "Langkah 1: Periksa mode operasi aplikasi..."
+# Cek direct mode
+PID_DIRECT=$(ps aux | grep "node.*dist/index.js" | grep -v grep | awk '{print $2}')
+if [[ ! -z "$PID_DIRECT" ]]; then
+  echo "✅ Mode Eksekusi Langsung TERDETEKSI dengan PID: $PID_DIRECT"
+  echo "   Log aplikasi dapat diperiksa dengan: tail -f nohup.out"
+  echo ""
+  tail -n 20 nohup.out || echo "File log nohup.out tidak ditemukan"
+else
+  echo "❌ Mode Eksekusi Langsung TIDAK TERDETEKSI"
+  
+  # Cek systemd
+  echo "Langkah 2: Cek status systemd service..."
+  systemctl status lintasfiber || echo "Service systemd lintasfiber tidak terdaftar"
 
-echo "Langkah 2: Cek log service..."
-journalctl -u lintasfiber -n 50 --no-pager
+  echo "Langkah 3: Cek log service..."
+  journalctl -u lintasfiber -n 20 --no-pager || echo "Log systemd tidak tersedia"
+fi
 
 echo "Langkah 3: Cek PATH dan lokasi Node.js..."
 echo "Node.js path: $(which node)"
@@ -55,13 +69,25 @@ echo "1. Jika Node.js tidak ditemukan, pastikan Node.js terinstal dengan benar"
 echo "2. Jika file dist/index.js tidak ada, jalankan 'npm run build' terlebih dahulu"
 echo "3. Jika database gagal terhubung, periksa DATABASE_URL di file .env"
 echo "4. Jika port 80 sudah digunakan, hentikan layanan lain yang menggunakannya"
-echo "5. Untuk mengatasi masalah systemd, coba modifikasi file lintasfiber.service"
+echo "5. Jika systemd service bermasalah, gunakan metode alternatif"
+echo ""
+echo "METODE ALTERNATIF TANPA SYSTEMD:"
+echo "Jika metode systemd tidak berfungsi di sistem Anda, gunakan metode eksekusi langsung:"
+echo "1. Pastikan script alternatif memiliki izin eksekusi:"
+echo "   chmod +x run-direct.sh status.sh stop.sh"
+echo "2. Jalankan aplikasi langsung dengan:"
+echo "   sudo ./run-direct.sh"
+echo "3. Periksa status aplikasi dengan:"
+echo "   ./status.sh"
+echo "4. Hentikan aplikasi dengan:"
+echo "   sudo ./stop.sh"
 echo ""
 echo "Perintah Perbaikan Umum:"
 echo "- Rebuild aplikasi: npm run build"
 echo "- Restart service: systemctl restart lintasfiber"
 echo "- Edit file service: nano /etc/systemd/system/lintasfiber.service"
 echo "- Setelah edit service: systemctl daemon-reload && systemctl restart lintasfiber"
+echo "- Log aplikasi direct mode: tail -f nohup.out"
 echo "====================================================="
 
 # Buat file service yang lebih umum, menggunakan path absolut
