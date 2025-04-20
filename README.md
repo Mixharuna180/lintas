@@ -14,7 +14,39 @@ Website profesional untuk PT. LINTAS FIBER NUSANTARA, menampilkan layanan intern
 
 Website ini dapat diinstal dengan mudah menggunakan skrip instalasi satu klik yang disediakan. Skrip ini akan mengatur semua yang diperlukan, termasuk dependensi, database, dan konfigurasi untuk menjalankan website di port 80.
 
-### Metode 1: Menggunakan systemd (untuk sistem Linux modern)
+### Metode 1: Khusus untuk Ubuntu
+
+#### A. Ubuntu Desktop
+
+```bash
+# Clone repository
+git clone https://github.com/Mixharuna180/lintas.git
+cd lintas
+
+# Berikan izin eksekusi pada skrip instalasi
+chmod +x install-ubuntu.sh
+
+# Jalankan instalasi (perlu akses root untuk port 80)
+sudo ./install-ubuntu.sh
+```
+
+#### B. Ubuntu Server (Headless)
+
+```bash
+# Clone repository
+git clone https://github.com/Mixharuna180/lintas.git
+cd lintas
+
+# Berikan izin eksekusi pada skrip instalasi
+chmod +x install-ubuntu-headless.sh
+
+# Jalankan instalasi (perlu akses root untuk port 80)
+sudo ./install-ubuntu-headless.sh
+```
+
+Script ini akan otomatis menginstall Node.js dan PostgreSQL jika belum ada, membuat database, mengkonfigurasi variabel lingkungan, dan menyiapkan layanan systemd. Versi headless juga mengkonfigurasi Nginx sebagai reverse proxy dan mendeteksi alamat IP server.
+
+### Metode 2: Menggunakan systemd (untuk sistem Linux modern lainnya)
 
 ```bash
 # Clone repository
@@ -28,7 +60,7 @@ chmod +x install.sh
 sudo ./install.sh
 ```
 
-### Metode 2: Menggunakan PM2 (alternatif)
+### Metode 3: Menggunakan PM2 (alternatif)
 
 ```bash
 # Clone repository
