@@ -14,6 +14,8 @@ Website profesional untuk PT. LINTAS FIBER NUSANTARA, menampilkan layanan intern
 
 Website ini dapat diinstal dengan mudah menggunakan skrip instalasi satu klik yang disediakan. Skrip ini akan mengatur semua yang diperlukan, termasuk dependensi, database, dan konfigurasi untuk menjalankan website di port 80.
 
+> **PENTING**: Jika Anda mengalami masalah dengan systemd service, tersedia metode alternatif menggunakan eksekusi langsung. Lihat bagian "Metode Alternatif Tanpa Systemd" di bawah.
+
 ### Metode 1: Khusus untuk Ubuntu
 
 #### A. Ubuntu Desktop
@@ -97,6 +99,32 @@ Jika Anda ingin mengkonfigurasi secara manual, ikuti langkah-langkah berikut:
    ```bash
    NODE_ENV=production npm start
    ```
+
+## Metode Alternatif Tanpa Systemd
+
+Jika Anda mengalami masalah dengan systemd service, gunakan metode eksekusi langsung berikut:
+
+```bash
+# Clone repository
+git clone https://github.com/Mixharuna180/lintas.git
+cd lintas
+
+# Berikan izin eksekusi pada skrip
+chmod +x run-direct.sh status.sh stop.sh
+
+# Jalankan aplikasi (perlu akses root untuk port 80)
+sudo ./run-direct.sh
+```
+
+Skrip ini akan menjalankan aplikasi secara langsung di background dan menyimpan log di file `nohup.out`. 
+
+### Mengelola Aplikasi
+
+Setelah menjalankan dengan metode langsung, Anda dapat menggunakan skrip berikut:
+
+- Memeriksa status: `./status.sh`
+- Menghentikan aplikasi: `sudo ./stop.sh`
+- Melihat log: `tail -f nohup.out`
 
 ## Variabel Lingkungan
 
