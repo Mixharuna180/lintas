@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { useScroll } from '@/lib/hooks/use-scroll';
-import { Menu, X, } from 'lucide-react';
+import { Menu, X, User, LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/use-auth';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const scrolled = useScroll(50);
+  const { user } = useAuth();
+  const [_, navigate] = useLocation();
 
   // Close mobile menu on resize
   useEffect(() => {
