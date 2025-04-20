@@ -54,8 +54,26 @@ const Header = () => {
             <a href="#contact" className="font-heading font-medium text-gray-700 hover:text-[#00BFFF] transition duration-300">Kontak</a>
           </nav>
 
-          {/* Contact Button */}
-          <div className="hidden md:block">
+          {/* Login/Member Area Button */}
+          <div className="hidden md:flex items-center space-x-4">
+            {user ? (
+              <Button 
+                className="bg-primary hover:bg-opacity-90 text-white rounded-full"
+                onClick={() => navigate('/member')}
+              >
+                <User className="mr-2 h-4 w-4" />
+                Area Member
+              </Button>
+            ) : (
+              <Button 
+                className="bg-primary hover:bg-opacity-90 text-white rounded-full"
+                onClick={() => navigate('/auth')}
+              >
+                <LogIn className="mr-2 h-4 w-4" />
+                Login / Daftar
+              </Button>
+            )}
+            
             <a href="#contact">
               <Button className="bg-[#FF6B00] hover:bg-opacity-90 text-white rounded-full">
                 Hubungi Kami
@@ -125,6 +143,29 @@ const Header = () => {
               >
                 Kontak
               </a>
+              {user ? (
+                <button 
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    navigate('/member');
+                  }}
+                  className="bg-primary hover:bg-opacity-90 text-white px-6 py-2 rounded-full font-heading font-medium transition duration-300 text-center flex items-center justify-center"
+                >
+                  <User className="mr-2 h-4 w-4" />
+                  Area Member
+                </button>
+              ) : (
+                <button 
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    navigate('/auth');
+                  }}
+                  className="bg-primary hover:bg-opacity-90 text-white px-6 py-2 rounded-full font-heading font-medium transition duration-300 text-center flex items-center justify-center"
+                >
+                  <LogIn className="mr-2 h-4 w-4" />
+                  Login / Daftar
+                </button>
+              )}
               <a 
                 href="#contact" 
                 onClick={() => setIsMobileMenuOpen(false)}
