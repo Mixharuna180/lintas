@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -6,6 +6,12 @@ export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
+  email: text("email").notNull().unique(),
+  name: text("name").notNull(),
+  phone: varchar("phone", { length: 20 }),
+  address: text("address"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  role: text("role").default("customer").notNull(),
 });
 
 export const contactSubmissions = pgTable("contact_submissions", {
@@ -21,6 +27,10 @@ export const contactSubmissions = pgTable("contact_submissions", {
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
+  email: true,
+  name: true,
+  phone: true,
+  address: true,
 });
 
 export const insertContactSubmissionSchema = createInsertSchema(contactSubmissions).pick({
