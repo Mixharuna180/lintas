@@ -69,7 +69,8 @@ After=network.target postgresql.service
 [Service]
 WorkingDirectory=$(pwd)
 EnvironmentFile=$(pwd)/.env
-ExecStart=/usr/bin/env NODE_ENV=production node $(pwd)/dist/index.js
+ExecStart=$(which node) $(pwd)/dist/index.js
+Environment=NODE_ENV=production
 Restart=always
 User=root
 Group=root
